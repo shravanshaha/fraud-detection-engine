@@ -14,16 +14,19 @@ public class BlacklistRule implements FraudRule {
     @Override
     public RuleResult evaluate(Transaction transaction) {
 
-        // Database blacklist check will be implemented later
-        boolean blacklisted = false;
+        String merchant = transaction.getMerchantName();
+
+        boolean blacklisted =
+                "SCAM_STORE".equalsIgnoreCase(merchant)
+                || "FAKE_PAYMENT".equalsIgnoreCase(merchant);
 
         if (blacklisted) {
-        	return new RuleResult(
-        	        getRuleCode(),
-        	        true,
-        	        RISK_SCORE,
-        	        "Transaction matches blacklist"
-        	);
+            return new RuleResult(
+                    getRuleCode(),
+                    true,
+                    RISK_SCORE,
+                    "Transaction matches blacklist"
+            );
         }
 
         return new RuleResult(
