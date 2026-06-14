@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.shravan.frauddetection.dto.TransactionRequest;
 import com.shravan.frauddetection.dto.TransactionResponse;
 import com.shravan.frauddetection.service.TransactionService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/transactions")
@@ -18,7 +19,7 @@ public class TransactionController {
 
     @PostMapping
     public TransactionResponse createTransaction(
-            @RequestBody TransactionRequest request) {
+    		@Valid @RequestBody TransactionRequest request) {
 
         return transactionService.processTransaction(request);
     }
