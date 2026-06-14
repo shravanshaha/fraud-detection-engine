@@ -19,7 +19,6 @@ public class RuleEngineService {
 
         return fraudRules.stream()
                 .map(rule -> rule.evaluate(transaction))
-                .filter(RuleResult::isTriggered)
                 .toList();
     }
     

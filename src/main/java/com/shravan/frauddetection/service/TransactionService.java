@@ -1,5 +1,7 @@
 package com.shravan.frauddetection.service;
 
+import com.shravan.frauddetection.model.entity.RuleEvaluation;
+import com.shravan.frauddetection.repository.RuleEvaluationRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,14 +24,17 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final RuleEngineService ruleEngineService;
-
+    private final RuleEvaluationRepository ruleEvaluationRepository;
+    
     public TransactionService(
             AccountRepository accountRepository,
             TransactionRepository transactionRepository,
+            RuleEvaluationRepository ruleEvaluationRepository,
             RuleEngineService ruleEngineService) {
 
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.ruleEvaluationRepository = ruleEvaluationRepository;
         this.ruleEngineService = ruleEngineService;
     }
 
@@ -76,6 +81,19 @@ public class TransactionService {
                 transactionRepository.save(transaction);
 
 
+        for (RuleResult result : results) {
+
+            RuleEvaluation evaluation = new RuleEvaluation();
+
+            evaluation.setTransaction(savedTransaction);
+            evaluation.setRuleCode(result.getRuleCode());
+            evaluation.setTriggered(result.isTriggered());
+            evaluation.setScoreContribution(result.getScore());
+            evaluation.setDetailMessage(result.getMessage());
+
+            ruleEvaluationRepository.save(evaluation);
+        }
+        
         return new TransactionResponse(
                 savedTransaction.getId(),
                 riskScore,
