@@ -16,7 +16,7 @@ https://fraud-detection-engine-htxl.onrender.com
 
 https://fraud-detection-engine-htxl.onrender.com/swagger-ui/index.html
 
----
+## ⚠️ First request may take 1–2 minutes because the application is hosted on Render free tier.
 
 ## 🏗️ System Architecture
 
